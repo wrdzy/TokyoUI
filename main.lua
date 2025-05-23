@@ -63,7 +63,7 @@ local library = {
     open = false;
     opening = false;
     hasInit = false;
-    cheatname = startupArgs.cheatname or 'Clanware';
+    cheatname = startupArgs.cheatname or 'CROW';
     gamename = startupArgs.gamename or 'Universal';
     fileext = startupArgs.fileext or '.txt';
 }
@@ -600,8 +600,8 @@ function library:init()
 
     makefolder(self.cheatname)
     makefolder(self.cheatname..'/assets')
-    makefolder(self.cheatname..'/'..self.gamename)
-    makefolder(self.cheatname..'/'..self.gamename..'/configs');
+    makefolder(self.cheatname..'/games')
+    makefolder(self.cheatname..'/games'/configs');
 
     function self:SetTheme(theme)
         for i,v in next, theme do
@@ -611,8 +611,8 @@ function library:init()
     end
 
     function self:GetConfig(name)
-        if isfile(self.cheatname..'/'..self.gamename..'/configs/'..name..self.fileext) then
-            return readfile(self.cheatname..'/'..self.gamename..'/configs/'..name..self.fileext);
+        if isfile(self.cheatname..'/games'/configs/'..name..self.fileext) then
+            return readfile(self.cheatname..'/games'/configs/'..name..self.fileext);
         end
     end
 
@@ -682,7 +682,7 @@ function library:init()
                     cfg[flag] = option.input
                 end
             end
-            writefile(self.cheatname..'/'..self.gamename..'/configs/'..name..self.fileext, http:JSONEncode(cfg));
+            writefile(self.cheatname..'/games'/configs/'..name..self.fileext, http:JSONEncode(cfg));
         end)
 
         if s then
@@ -4572,7 +4572,7 @@ function library:init()
             text = {
                 {self.cheatname, true},
                 {"Private", true},
-                {self.gamename, true},
+                {self.displaygamename, true},
                 {'0 fps', true},
                 {'0ms', true},
                 {'00:00:00', true},
@@ -4709,7 +4709,7 @@ function library:CreateSettingsTab(menu)
 
     local function refreshConfigs()
         library.options.selectedconfig:ClearValues();
-        for _,v in next, listfiles(self.cheatname..'/'..self.gamename..'/configs') do
+        for _,v in next, listfiles(self.cheatname..'/games/configs') do
             local ext = '.'..v:split('.')[#v:split('.')];
             if ext == self.fileext then
                 library.options.selectedconfig:AddValue(v:split('\\')[#v:split('\\')]:sub(1,-#ext-1))
@@ -4728,7 +4728,7 @@ function library:CreateSettingsTab(menu)
             library:SendNotification('Config \''..library.flags.configinput..'\' already exists.', 5, c3new(1,0,0));
             return
         end
-        writefile(self.cheatname..'/'..self.gamename..'/configs/'..library.flags.configinput.. self.fileext, http:JSONEncode({}));
+        writefile(self.cheatname..'/games/configs/'..library.flags.configinput.. self.fileext, http:JSONEncode({}));
         refreshConfigs()
     end}):AddButton({text = 'Delete', confirm = true, callback = function()
         if library:GetConfig(library.flags.selectedconfig) then
