@@ -601,7 +601,6 @@ function library:init()
     makefolder(self.cheatname)
     makefolder(self.cheatname..'/assets')
     makefolder(self.cheatname..'/'..self.gamename)
-    makefolder(self.cheatname..'/'..self.gamename..'/configs');
 
     function self:SetTheme(theme)
         for i,v in next, theme do
@@ -611,8 +610,8 @@ function library:init()
     end
 
     function self:GetConfig(name)
-        if isfile(self.cheatname..'/'..self.gamename..'/configs/'..name..self.fileext) then
-            return readfile(self.cheatname..'/'..self.gamename..'/configs/'..name..self.fileext);
+            if isfile(self.cheatname..'/'..self.gamename..'/'..name..self.fileext) then
+            return readfile(self.cheatname..'/'..self.gamename..'/'..name..self.fileext);
         end
     end
 
@@ -682,7 +681,7 @@ function library:init()
                     cfg[flag] = option.input
                 end
             end
-            writefile(self.cheatname..'/'..self.gamename..'/configs/'..name..self.fileext, http:JSONEncode(cfg));
+            writefile(self.cheatname..'/'..self.gamename..'/'..name..self.fileext, http:JSONEncode(cfg));
         end)
 
         if s then
@@ -4709,7 +4708,7 @@ function library:CreateSettingsTab(menu)
 
     local function refreshConfigs()
         library.options.selectedconfig:ClearValues();
-        for _,v in next, listfiles(self.cheatname..'/'..self.gamename..'/configs') do
+        for _,v in next, listfiles(self.cheatname..'/'..self.gamename) do
             local ext = '.'..v:split('.')[#v:split('.')];
             if ext == self.fileext then
                 library.options.selectedconfig:AddValue(v:split('\\')[#v:split('\\')]:sub(1,-#ext-1))
