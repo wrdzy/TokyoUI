@@ -72,7 +72,7 @@ library.themes = {
     {
         name = 'Default',
         theme = {
-            ['Accent']                    = fromrgb(124,97,196);
+            ['Accent']                    = fromrgb(25,118,210);  -- Vibrant deep blue
             ['Background']                = fromrgb(17,17,17);
             ['Border']                    = fromrgb(0,0,0);
             ['Border 1']                  = fromrgb(47,47,47);
@@ -249,6 +249,214 @@ library.themes = {
             ['Option Background']         = fromrgb(24,24,27);
             ["Risky Text"]                = fromrgb(175, 21, 21);
             ["Risky Text Enabled"]        = fromrgb(255, 41, 41);
+        }
+    },
+    {
+        name = 'Ocean Breeze',
+        theme = {
+            ['Accent']                    = fromrgb(0,188,212);
+            ['Background']                = fromrgb(11,19,43);
+            ['Border']                    = fromrgb(0,0,0);
+            ['Border 1']                  = fromrgb(38,50,76);
+            ['Border 2']                  = fromrgb(15,23,47);
+            ['Border 3']                  = fromrgb(8,12,24);
+            ['Primary Text']              = fromrgb(230,245,255);
+            ['Group Background']          = fromrgb(15,23,47);
+            ['Selected Tab Background']   = fromrgb(15,23,47);
+            ['Unselected Tab Background'] = fromrgb(11,19,43);
+            ['Selected Tab Text']         = fromrgb(230,245,255);
+            ['Unselected Tab Text']       = fromrgb(140,160,180);
+            ['Section Background']        = fromrgb(11,19,43);
+            ['Option Text 1']             = fromrgb(230,245,255);
+            ['Option Text 2']             = fromrgb(180,200,220);
+            ['Option Text 3']             = fromrgb(140,160,180);
+            ['Option Border 1']           = fromrgb(38,50,76);
+            ['Option Border 2']           = fromrgb(0,0,0);
+            ['Option Background']         = fromrgb(19,27,51);
+            ["Risky Text"]                = fromrgb(255, 87, 87);
+            ["Risky Text Enabled"]        = fromrgb(255, 107, 107);
+        }
+    },
+    {
+        name = 'Forest Night',
+        theme = {
+            ['Accent']                    = fromrgb(76,175,80);
+            ['Background']                = fromrgb(16,24,16);
+            ['Border']                    = fromrgb(0,0,0);
+            ['Border 1']                  = fromrgb(42,52,42);
+            ['Border 2']                  = fromrgb(20,28,20);
+            ['Border 3']                  = fromrgb(10,14,10);
+            ['Primary Text']              = fromrgb(230,245,230);
+            ['Group Background']          = fromrgb(20,28,20);
+            ['Selected Tab Background']   = fromrgb(20,28,20);
+            ['Unselected Tab Background'] = fromrgb(16,24,16);
+            ['Selected Tab Text']         = fromrgb(230,245,230);
+            ['Unselected Tab Text']       = fromrgb(140,170,140);
+            ['Section Background']        = fromrgb(16,24,16);
+            ['Option Text 1']             = fromrgb(230,245,230);
+            ['Option Text 2']             = fromrgb(180,210,180);
+            ['Option Text 3']             = fromrgb(140,170,140);
+            ['Option Border 1']           = fromrgb(42,52,42);
+            ['Option Border 2']           = fromrgb(0,0,0);
+            ['Option Background']         = fromrgb(24,32,24);
+            ["Risky Text"]                = fromrgb(255, 87, 87);
+            ["Risky Text Enabled"]        = fromrgb(255, 107, 107);
+        }
+    },
+    {
+        name = 'Sunset Glow',
+        theme = {
+            ['Accent']                    = fromrgb(255,152,0);
+            ['Background']                = fromrgb(26,18,11);
+            ['Border']                    = fromrgb(0,0,0);
+            ['Border 1']                  = fromrgb(56,42,28);
+            ['Border 2']                  = fromrgb(30,22,15);
+            ['Border 3']                  = fromrgb(15,11,8);
+            ['Primary Text']              = fromrgb(255,245,230);
+            ['Group Background']          = fromrgb(30,22,15);
+            ['Selected Tab Background']   = fromrgb(30,22,15);
+            ['Unselected Tab Background'] = fromrgb(26,18,11);
+            ['Selected Tab Text']         = fromrgb(255,245,230);
+            ['Unselected Tab Text']       = fromrgb(180,160,140);
+            ['Section Background']        = fromrgb(26,18,11);
+            ['Option Text 1']             = fromrgb(255,245,230);
+            ['Option Text 2']             = fromrgb(220,200,180);
+            ['Option Text 3']             = fromrgb(180,160,140);
+            ['Option Border 1']           = fromrgb(56,42,28);
+            ['Option Border 2']           = fromrgb(0,0,0);
+            ['Option Background']         = fromrgb(34,26,19);
+            ["Risky Text"]                = fromrgb(255, 87, 87);
+            ["Risky Text Enabled"]        = fromrgb(255, 107, 107);
+        }
+    },
+    {
+        name = 'Arctic Ice',
+        theme = {
+            ['Accent']                    = fromrgb(79,195,247);
+            ['Background']                = fromrgb(18,22,25);
+            ['Border']                    = fromrgb(0,0,0);
+            ['Border 1']                  = fromrgb(48,56,64);
+            ['Border 2']                  = fromrgb(22,26,29);
+            ['Border 3']                  = fromrgb(12,14,16);
+            ['Primary Text']              = fromrgb(245,250,255);
+            ['Group Background']          = fromrgb(22,26,29);
+            ['Selected Tab Background']   = fromrgb(22,26,29);
+            ['Unselected Tab Background'] = fromrgb(18,22,25);
+            ['Selected Tab Text']         = fromrgb(245,250,255);
+            ['Unselected Tab Text']       = fromrgb(160,180,200);
+            ['Section Background']        = fromrgb(18,22,25);
+            ['Option Text 1']             = fromrgb(245,250,255);
+            ['Option Text 2']             = fromrgb(200,220,240);
+            ['Option Text 3']             = fromrgb(160,180,200);
+            ['Option Border 1']           = fromrgb(48,56,64);
+            ['Option Border 2']           = fromrgb(0,0,0);
+            ['Option Background']         = fromrgb(26,30,33);
+            ["Risky Text"]                = fromrgb(255, 87, 87);
+            ["Risky Text Enabled"]        = fromrgb(255, 107, 107);
+        }
+    },
+    {
+        name = 'Crimson Blade',
+        theme = {
+            ['Accent']                    = fromrgb(220,38,127);
+            ['Background']                = fromrgb(20,12,14);
+            ['Border']                    = fromrgb(0,0,0);
+            ['Border 1']                  = fromrgb(52,32,36);
+            ['Border 2']                  = fromrgb(24,16,18);
+            ['Border 3']                  = fromrgb(12,8,10);
+            ['Primary Text']              = fromrgb(255,240,245);
+            ['Group Background']          = fromrgb(24,16,18);
+            ['Selected Tab Background']   = fromrgb(24,16,18);
+            ['Unselected Tab Background'] = fromrgb(20,12,14);
+            ['Selected Tab Text']         = fromrgb(255,240,245);
+            ['Unselected Tab Text']       = fromrgb(180,140,150);
+            ['Section Background']        = fromrgb(20,12,14);
+            ['Option Text 1']             = fromrgb(255,240,245);
+            ['Option Text 2']             = fromrgb(220,180,190);
+            ['Option Text 3']             = fromrgb(180,140,150);
+            ['Option Border 1']           = fromrgb(52,32,36);
+            ['Option Border 2']           = fromrgb(0,0,0);
+            ['Option Background']         = fromrgb(28,20,22);
+            ["Risky Text"]                = fromrgb(255, 87, 87);
+            ["Risky Text Enabled"]        = fromrgb(255, 107, 107);
+        }
+    },
+    {
+        name = 'Cyber Matrix',
+        theme = {
+            ['Accent']                    = fromrgb(0,255,65);
+            ['Background']                = fromrgb(5,10,5);
+            ['Border']                    = fromrgb(0,0,0);
+            ['Border 1']                  = fromrgb(25,45,25);
+            ['Border 2']                  = fromrgb(8,15,8);
+            ['Border 3']                  = fromrgb(3,6,3);
+            ['Primary Text']              = fromrgb(0,255,65);
+            ['Group Background']          = fromrgb(8,15,8);
+            ['Selected Tab Background']   = fromrgb(8,15,8);
+            ['Unselected Tab Background'] = fromrgb(5,10,5);
+            ['Selected Tab Text']         = fromrgb(0,255,65);
+            ['Unselected Tab Text']       = fromrgb(0,180,45);
+            ['Section Background']        = fromrgb(5,10,5);
+            ['Option Text 1']             = fromrgb(0,255,65);
+            ['Option Text 2']             = fromrgb(0,220,55);
+            ['Option Text 3']             = fromrgb(0,180,45);
+            ['Option Border 1']           = fromrgb(25,45,25);
+            ['Option Border 2']           = fromrgb(0,0,0);
+            ['Option Background']         = fromrgb(12,20,12);
+            ["Risky Text"]                = fromrgb(255, 65, 65);
+            ["Risky Text Enabled"]        = fromrgb(255, 85, 85);
+        }
+    },
+    {
+        name = 'Royal Purple',
+        theme = {
+            ['Accent']                    = fromrgb(156,39,176);
+            ['Background']                = fromrgb(18,10,20);
+            ['Border']                    = fromrgb(0,0,0);
+            ['Border 1']                  = fromrgb(48,30,52);
+            ['Border 2']                  = fromrgb(22,14,24);
+            ['Border 3']                  = fromrgb(10,6,12);
+            ['Primary Text']              = fromrgb(250,240,255);
+            ['Group Background']          = fromrgb(22,14,24);
+            ['Selected Tab Background']   = fromrgb(22,14,24);
+            ['Unselected Tab Background'] = fromrgb(18,10,20);
+            ['Selected Tab Text']         = fromrgb(250,240,255);
+            ['Unselected Tab Text']       = fromrgb(170,140,180);
+            ['Section Background']        = fromrgb(18,10,20);
+            ['Option Text 1']             = fromrgb(250,240,255);
+            ['Option Text 2']             = fromrgb(210,180,220);
+            ['Option Text 3']             = fromrgb(170,140,180);
+            ['Option Border 1']           = fromrgb(48,30,52);
+            ['Option Border 2']           = fromrgb(0,0,0);
+            ['Option Background']         = fromrgb(26,18,28);
+            ["Risky Text"]                = fromrgb(255, 87, 87);
+            ["Risky Text Enabled"]        = fromrgb(255, 107, 107);
+        }
+    },
+    {
+        name = 'Ghost White',
+        theme = {
+            ['Accent']                    = fromrgb(96,125,139);
+            ['Background']                = fromrgb(250,250,250);
+            ['Border']                    = fromrgb(200,200,200);
+            ['Border 1']                  = fromrgb(220,220,220);
+            ['Border 2']                  = fromrgb(240,240,240);
+            ['Border 3']                  = fromrgb(230,230,230);
+            ['Primary Text']              = fromrgb(33,33,33);
+            ['Group Background']          = fromrgb(245,245,245);
+            ['Selected Tab Background']   = fromrgb(240,240,240);
+            ['Unselected Tab Background'] = fromrgb(250,250,250);
+            ['Selected Tab Text']         = fromrgb(33,33,33);
+            ['Unselected Tab Text']       = fromrgb(117,117,117);
+            ['Section Background']        = fromrgb(248,248,248);
+            ['Option Text 1']             = fromrgb(33,33,33);
+            ['Option Text 2']             = fromrgb(66,66,66);
+            ['Option Text 3']             = fromrgb(117,117,117);
+            ['Option Border 1']           = fromrgb(220,220,220);
+            ['Option Border 2']           = fromrgb(200,200,200);
+            ['Option Background']         = fromrgb(255,255,255);
+            ["Risky Text"]                = fromrgb(211, 47, 47);
+            ["Risky Text Enabled"]        = fromrgb(244, 67, 54);
         }
     }
 }
