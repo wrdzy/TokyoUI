@@ -26,6 +26,7 @@ local executor = (
     getexecutorname and getexecutorname() or
     'unknown'
 )
+getgenv().executor = executor
 
 local library = {
     windows = {};
