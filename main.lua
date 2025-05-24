@@ -4776,9 +4776,6 @@ function library:init()
         end
 
     
-        if executor == "Wave" then
-            executor = "nigger"
-        end
        self.watermark = {
             objects = {};
             text = {
