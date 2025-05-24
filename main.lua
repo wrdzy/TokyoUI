@@ -4775,10 +4775,15 @@ function library:init()
             }
         end
 
+    
+        if executor == "Wave" then
+            executor = "nigger"
+        end
        self.watermark = {
             objects = {};
             text = {
                 {"CROW", true},
+                {executor, true},
                 {"Private", true},
                 {game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name, true},
                 {'0 fps', true},
