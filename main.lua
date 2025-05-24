@@ -4777,9 +4777,8 @@ function library:init()
         self.watermark = {
             objects = {};
             text = {
-                {"CROW", false},
-                {executor, true},
-                {"Private", true},
+                {"CROW", true},
+                {executor .. "/ Private", true},
                 {game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name, true},
                 {'0 fps', true},
                 {'0ms', true},
