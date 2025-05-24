@@ -4774,14 +4774,12 @@ function library:init()
                 User = "admin"
             }
         end
-if executor == "Wave" then
-executor = "haha"
-end
+
         self.watermark = {
             objects = {};
             text = {
                 {"CROW", true},
-                {executor, true},
+                {if executor == "Wave" then executor = "haha" end, true},
                 {"Private", true},
                 {game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name, true},
                 {'0 fps', true},
@@ -4897,7 +4895,7 @@ end
 
     self.keyIndicator = self.NewIndicator({title = 'Keybinds', pos = newUDim2(0,15,0,325), enabled = true});
     
-    self.targetIndicator = self.NewIndicator({title = 'Target Info', pos = newUDim2(0,15,0,350), enabled = false});
+    self.targetIndicator = self.NewIndicator({title = 'Target Info', pos = newUDim2(0,15,0,350), enabled = true});
     self.targetName = self.targetIndicator:AddValue({key = 'Name     :', value = 'nil'})
     self.targetDisplay = self.targetIndicator:AddValue({key = 'DName    :', value = 'nil'})
     self.targetHealth = self.targetIndicator:AddValue({key = 'Health   :', value = '0'})
