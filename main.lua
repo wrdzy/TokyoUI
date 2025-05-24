@@ -22,7 +22,7 @@ local c3new, fromrgb, fromhsv = Color3.new, Color3.fromRGB, Color3.fromHSV
 local next, newInstance, newUDim2, newVector2 = next, Instance.new, UDim2.new, Vector2.new
 local isexecutorclosure = isexecutorclosure or is_synapse_function or is_sirhurt_closure or iskrnlclosure;
 local executor = (
-    syn and 'syn' or
+    identifyexecutor and select(1, identifyexecutor()) or
     getexecutorname and getexecutorname() or
     'unknown'
 )
@@ -4777,7 +4777,8 @@ function library:init()
         self.watermark = {
             objects = {};
             text = {
-                {"CROW", true},
+                {"CROW", false},
+                {executor, true},
                 {"Private", true},
                 {game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name, true},
                 {'0 fps', true},
