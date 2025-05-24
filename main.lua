@@ -4951,10 +4951,18 @@ function library:CreateSettingsTab(menu)
     end});
 
     mainSection:AddButton({text = 'Join Discord', flag = 'joindiscord', confirm = true, callback = function()
-        request({
-            Url = "https://discord.gg/gvU27E6BUY",
-            Method = "GET"
-        })
+        if syn and syn.request then
+            syn.request({Url = "https://discord.gg/gvU27E6BUY", Method = "GET"})
+        elseif request then
+            request({Url = "https://discord.gg/gvU27E6BUY", Method = "GET"})
+        elseif http_request then
+            http_request({Url = "https://discord.gg/gvU27E6BUY", Method = "GET"})
+        else
+            -- Fallback to clipboard
+            setclipboard('https://discord.gg/gvU27E6BUY')
+            library:SendNotification(library.cheatname..' | Discord link copied to clipboard!', 3);
+            return
+        end
         
         library:SendNotification(library.cheatname..' | Opening Discord in browser!', 3);
     end})
