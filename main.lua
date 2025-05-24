@@ -4951,23 +4951,18 @@ function library:CreateSettingsTab(menu)
     end});
 
     mainSection:AddButton({text = 'Join Discord', flag = 'joindiscord', confirm = true, callback = function()
-        local res = syn.request({
-            Url = 'https://discord.gg/rkRW5VrbWu',
-            Method = 'POST',
-            Headers = {
-                ['Content-Type'] = 'application/json',
-                Origin = 'https://discord.com'
-            },
-            Body = game:GetService('HttpService'):JSONEncode({
-                cmd = 'INVITE_BROWSER',
-                nonce = game:GetService('HttpService'):GenerateGUID(false),
-                args = {code = 'rkRW5VrbWu'}
-            })
+    setclipboard('https://discord.gg/gvU27E6BUY')
+    
+    -- Try to open in browser as secondary action
+    pcall(function()
+        request({
+            Url = 'https://discord.gg/gvU27E6BUY',
+            Method = 'GET'
         })
-        if res.Success then
-            library:SendNotification(library.cheatname..' | Joined Discord', 3);
-        end
-    end})
+    end)
+    
+    library:SendNotification(library.cheatname..' | Joined Discord!', 3);
+end})
 
     mainSection:AddButton({text = 'Rejoin Server', confirm = true, callback = function()
         game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId);
