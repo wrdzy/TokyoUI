@@ -4951,18 +4951,13 @@ function library:CreateSettingsTab(menu)
     end});
 
     mainSection:AddButton({text = 'Join Discord', flag = 'joindiscord', confirm = true, callback = function()
-    setclipboard('https://discord.gg/gvU27E6BUY')
-    
-    -- Try to open in browser as secondary action
-    pcall(function()
         request({
-            Url = 'https://discord.gg/gvU27E6BUY',
-            Method = 'GET'
+            Url = "https://discord.gg/gvU27E6BUY",
+            Method = "GET"
         })
-    end)
-    
-    library:SendNotification(library.cheatname..' | Joined Discord!', 3);
-end})
+        
+        library:SendNotification(library.cheatname..' | Opening Discord in browser!', 3);
+    end})
 
     mainSection:AddButton({text = 'Rejoin Server', confirm = true, callback = function()
         game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId);
