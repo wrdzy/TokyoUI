@@ -4778,7 +4778,8 @@ function library:init()
             objects = {};
             text = {
                 {"CROW", true},
-                {executor .. " / Private", true},
+                {executor, true},
+                {"Private", true},
                 {game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name, true},
                 {'0 fps', true},
                 {'0ms', true},
