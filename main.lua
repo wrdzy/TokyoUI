@@ -4774,7 +4774,7 @@ function library:init()
                 User = "admin"
             }
         end
-if executor == "wave" then
+if executor == "Wave" then
 executor = "haha"
 end
         self.watermark = {
