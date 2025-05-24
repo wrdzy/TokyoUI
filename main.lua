@@ -5045,6 +5045,6 @@ themeSection:AddList({text = 'Presets', flag = 'preset_theme', values = themeStr
 
     return settingsTab;
 end
-self:SendNotification('Executor: '..executor)
+-- self:SendNotification('Executor: '..executor)
 getgenv().library = library
 return library
