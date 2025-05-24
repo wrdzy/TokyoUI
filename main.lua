@@ -65,7 +65,7 @@ local library = {
     hasInit = false;
     cheatname = startupArgs.cheatname or 'CROW';
     configname = 'GameConfigs';
-    fileext = '.lua' or '.txt';
+    fileext = '.txt';
 }
 
 library.themes = {
