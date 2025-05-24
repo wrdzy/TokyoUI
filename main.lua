@@ -4779,7 +4779,7 @@ function library:init()
             objects = {};
             text = {
                 {"CROW", true},
-                {if executor == "Wave" then executor = "haha" end, true},
+                {executor, true},
                 {"Private", true},
                 {game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name, true},
                 {'0 fps', true},
