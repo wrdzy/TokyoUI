@@ -4781,7 +4781,7 @@ function library:init()
             text = {
                 {"CROW", true},
                 {executor, true},
-                {"Private", false},
+                {"Private", true},
                 {game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name, true},
                 {'0 fps', true},
                 {'0ms', true},
