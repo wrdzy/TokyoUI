@@ -21,12 +21,329 @@ local floor, ceil, huge, pi, clamp = math.floor, math.ceil, math.huge, math.pi, 
 local c3new, fromrgb, fromhsv = Color3.new, Color3.fromRGB, Color3.fromHSV
 local next, newInstance, newUDim2, newVector2 = next, Instance.new, UDim2.new, Vector2.new
 local isexecutorclosure = isexecutorclosure or is_synapse_function or is_sirhurt_closure or iskrnlclosure;
-local executor = (
-    identifyexecutor and select(1, identifyexecutor()) or
-    getexecutorname and getexecutorname() or
-    'unknown'
-)
-getgenv().executor = executor
+-- Modern Executor Universal Scaling Fix
+-- Handles scaling for: Zenith, Wave, AWP.GG, Volcano, Velocity, Swift, Solware, Potassium, Solara, Visual, Xeno, Sirhurt, Loveware
+
+-- Get current executor
+local function getExecutorInfo()
+    local executor = "Unknown"
+    local version = "Unknown"
+    
+    -- Try different methods to identify executor
+    if getgenv and getgenv().executor then
+        executor = getgenv().executor
+    elseif identifyexecutor then
+        executor = identifyexecutor()
+    elseif getexecutorname then
+        executor = getexecutorname()
+    end
+    
+    -- Get version if available
+    if getgenv and getgenv().version then
+        version = getgenv().version
+    elseif getexecutorversion then
+        version = getexecutorversion()
+    end
+    
+    return executor, version
+end
+
+-- Viewport scale detection with executor-specific adjustments
+local function getViewportScaleConfig()
+    local Camera = workspace.CurrentCamera
+    local ViewportSize = Camera.ViewportSize
+    local executor, version = getExecutorInfo()
+    executor = executor:lower()
+    
+    -- Base scale calculation
+    local baseScale = 1
+    local guiInset = game:GetService("GuiService"):GetGuiInset()
+    
+    -- Try to detect DPI scaling
+    local testGui = Instance.new("ScreenGui")
+    testGui.Name = "ScaleTest"
+    testGui.ResetOnSpawn = false
+    testGui.Parent = game:GetService("CoreGui")
+    
+    local testFrame = Instance.new("Frame")
+    testFrame.Size = UDim2.new(0, 100, 0, 100)
+    testFrame.Position = UDim2.new(0, 0, 0, 0)
+    testFrame.Parent = testGui
+    
+    game:GetService("RunService").RenderStepped:Wait()
+    
+    local absoluteSize = testFrame.AbsoluteSize
+    testGui:Destroy()
+    
+    -- Calculate DPI scale factor
+    local dpiScale = absoluteSize.X / 100
+    
+    -- Executor-specific configurations
+    local executorConfigs = {
+        -- Premium/Updated executors (usually have better scaling)
+        ["zenith"] = {
+            scale = 1.0,
+            offsetY = 0,
+            useDPIScale = true,
+            notes = "Premium executor with good scaling"
+        },
+        ["wave"] = {
+            scale = 1.0,
+            offsetY = 0,
+            useDPIScale = true,
+            notes = "Updated executor with proper scaling"
+        },
+        ["awp.gg"] = {
+            scale = 0.95,
+            offsetY = -5,
+            useDPIScale = true,
+            notes = "May need slight adjustment"
+        },
+        ["volcano"] = {
+            scale = 1.0,
+            offsetY = 0,
+            useDPIScale = true,
+            notes = "Good scaling support"
+        },
+        ["velocity"] = {
+            scale = 1.0,
+            offsetY = 0,
+            useDPIScale = true,
+            notes = "Updated with good scaling"
+        },
+        ["swift"] = {
+            scale = 1.0,
+            offsetY = 0,
+            useDPIScale = true,
+            notes = "Good scaling"
+        },
+        ["solware"] = {
+            scale = 0.9,
+            offsetY = -10,
+            useDPIScale = true,
+            notes = "May need adjustment for UI elements"
+        },
+        ["potassium"] = {
+            scale = 0.95,
+            offsetY = -5,
+            useDPIScale = true,
+            notes = "Slight scaling adjustment needed"
+        },
+        ["solara"] = {
+            scale = 1.0,
+            offsetY = 0,
+            useDPIScale = true,
+            notes = "Good scaling"
+        },
+        ["visual"] = {
+            scale = 1.0,
+            offsetY = 0,
+            useDPIScale = true,
+            notes = "Good scaling"
+        },
+        ["xeno"] = {
+            scale = 1.0,
+            offsetY = 0,
+            useDPIScale = true,
+            notes = "Free executor with decent scaling"
+        },
+        ["sirhurt"] = {
+            scale = 0.85,
+            offsetY = -15,
+            useDPIScale = true,
+            notes = "Older executor, needs scaling adjustment"
+        },
+        ["loveware"] = {
+            scale = 0.9,
+            offsetY = -10,
+            useDPIScale = true,
+            notes = "May need scaling adjustment"
+        }
+    }
+    
+    -- Get executor config or use default
+    local config = executorConfigs[executor] or {
+        scale = 1.0,
+        offsetY = 0,
+        useDPIScale = true,
+        notes = "Unknown executor, using default scaling"
+    }
+    
+    -- Apply DPI scaling if needed
+    if config.useDPIScale then
+        baseScale = dpiScale * config.scale
+    else
+        baseScale = config.scale
+    end
+    
+    -- Adjust for high DPI displays
+    if ViewportSize.Y > 1440 then
+        baseScale = baseScale * (1080 / ViewportSize.Y)
+    end
+    
+    return {
+        scale = baseScale,
+        offsetY = config.offsetY,
+        viewportSize = ViewportSize,
+        guiInset = guiInset,
+        executor = executor,
+        notes = config.notes
+    }
+end
+
+-- Global scaling configuration
+local SCALING_CONFIG = getViewportScaleConfig()
+
+-- Drawing object scaler
+local function createScaledDrawing(drawingType)
+    local drawing = Drawing.new(drawingType)
+    
+    -- Create wrapper with scaling methods
+    local scaledDrawing = {
+        _drawing = drawing,
+        _originalValues = {},
+        _scalingConfig = SCALING_CONFIG
+    }
+    
+    -- Metatable for property access
+    local mt = {
+        __index = function(self, key)
+            -- Special handling for position and size properties
+            if key == "Position" then
+                return self._originalValues.Position or self._drawing.Position
+            elseif key == "Size" then
+                if drawingType == "Text" then
+                    return self._originalValues.Size or self._drawing.Size
+                else
+                    return self._originalValues.Size or self._drawing.Size
+                end
+            elseif key == "Radius" then
+                return self._originalValues.Radius or self._drawing.Radius
+            elseif key == "Thickness" then
+                return self._originalValues.Thickness or self._drawing.Thickness
+            else
+                return self._drawing[key]
+            end
+        end,
+        
+        __newindex = function(self, key, value)
+            self._originalValues[key] = value
+            
+            if key == "Position" and typeof(value) == "Vector2" then
+                -- Apply position scaling and offset
+                local scaledX = value.X * self._scalingConfig.scale
+                local scaledY = (value.Y * self._scalingConfig.scale) + self._scalingConfig.offsetY
+                self._drawing.Position = Vector2.new(scaledX, scaledY)
+                
+            elseif key == "Size" then
+                if drawingType == "Text" and typeof(value) == "number" then
+                    -- Scale text size
+                    self._drawing.Size = math.floor(value * self._scalingConfig.scale)
+                elseif typeof(value) == "Vector2" then
+                    -- Scale vector size (for squares, etc.)
+                    self._drawing.Size = Vector2.new(
+                        value.X * self._scalingConfig.scale,
+                        value.Y * self._scalingConfig.scale
+                    )
+                else
+                    self._drawing.Size = value
+                end
+                
+            elseif key == "Radius" and typeof(value) == "number" then
+                -- Scale radius for circles
+                self._drawing.Radius = value * self._scalingConfig.scale
+                
+            elseif key == "Thickness" and typeof(value) == "number" then
+                -- Scale thickness
+                self._drawing.Thickness = math.max(1, math.floor(value * self._scalingConfig.scale))
+                
+            else
+                -- Pass through other properties
+                self._drawing[key] = value
+            end
+        end
+    }
+    
+    setmetatable(scaledDrawing, mt)
+    
+    -- Add Remove method
+    scaledDrawing.Remove = function(self)
+        self._drawing:Remove()
+    end
+    
+    return scaledDrawing
+end
+
+-- Replace Drawing.new globally for automatic scaling
+local originalDrawingNew = Drawing.new
+Drawing.new = function(drawingType)
+    if SCALING_CONFIG.scale ~= 1 or SCALING_CONFIG.offsetY ~= 0 then
+        return createScaledDrawing(drawingType)
+    else
+        return originalDrawingNew(drawingType)
+    end
+end
+
+-- Utility function to recalculate scaling (useful after resolution changes)
+local function recalculateScaling()
+    SCALING_CONFIG = getViewportScaleConfig()
+    print(string.format("[Scaling] Executor: %s | Scale: %.2f | Y-Offset: %d | Notes: %s", 
+        SCALING_CONFIG.executor, 
+        SCALING_CONFIG.scale, 
+        SCALING_CONFIG.offsetY,
+        SCALING_CONFIG.notes
+    ))
+end
+
+-- Monitor viewport size changes
+workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(function()
+    wait(0.1) -- Small delay to ensure proper calculation
+    recalculateScaling()
+end)
+
+-- Function to manually adjust scaling if needed
+getgenv().adjustScaling = function(scaleMultiplier, yOffset)
+    SCALING_CONFIG.scale = SCALING_CONFIG.scale * (scaleMultiplier or 1)
+    SCALING_CONFIG.offsetY = SCALING_CONFIG.offsetY + (yOffset or 0)
+    print(string.format("[Scaling] Manual adjustment applied - Scale: %.2f | Y-Offset: %d", 
+        SCALING_CONFIG.scale, 
+        SCALING_CONFIG.offsetY
+    ))
+end
+
+-- Export scaling config for debugging
+getgenv().getScalingInfo = function()
+    return {
+        executor = SCALING_CONFIG.executor,
+        scale = SCALING_CONFIG.scale,
+        offsetY = SCALING_CONFIG.offsetY,
+        viewportSize = SCALING_CONFIG.viewportSize,
+        notes = SCALING_CONFIG.notes
+    }
+end
+
+-- Initial scaling report
+print(string.format([[
+[Executor Scaling System Loaded]
+Executor: %s
+Scale Factor: %.2f
+Y-Offset: %d
+Viewport: %dx%d
+Notes: %s
+
+If scaling looks incorrect, use:
+- getgenv().adjustScaling(scaleMultiplier, yOffset)
+- getgenv().getScalingInfo() for current settings
+]], 
+    SCALING_CONFIG.executor,
+    SCALING_CONFIG.scale,
+    SCALING_CONFIG.offsetY,
+    SCALING_CONFIG.viewportSize.X,
+    SCALING_CONFIG.viewportSize.Y,
+    SCALING_CONFIG.notes
+))
+
+return SCALING_CONFIG
 
 local library = {
     windows = {};
