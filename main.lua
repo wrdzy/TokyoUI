@@ -732,9 +732,40 @@ do
                     end
                 elseif i == 'Visible' then
                     drawing.Visible = v
-                elseif i == 'Font' and v == 2 and executor == 'Wave' then
+                elseif i == 'Font' then
+                if executor == 'Wave' and v == 2 then
+                    v = 1
+                elseif executor == 'Sirhurt' and v == 2 then
+                    v = 1
+                elseif executor == 'Solware' and v == 2 then
+                    v = 1
+                elseif executor == 'AWP.GG' and v == 3 then
+                    v = 2
+                elseif executor == 'Potassium' and v == 2 then
+                    v = 1
+                elseif executor == 'Loveware' and v == 2 then
                     v = 1
                 end
+            elseif i == 'Size' and drawing.Class == 'Text' then
+                -- Text size scaling for different executors
+                local scaleFactors = {
+                    ['Wave'] = 1.0,
+                    ['Zenith'] = 1.0,
+                    ['AWP.GG'] = 0.95,
+                    ['Volcano'] = 1.0,
+                    ['Velocity'] = 1.0,
+                    ['Swift'] = 1.0,
+                    ['Solware'] = 0.9,
+                    ['Potassium'] = 0.95,
+                    ['Solara'] = 1.0,
+                    ['Visual'] = 1.0,
+                    ['Xeno'] = 1.0,
+                    ['Sirhurt'] = 0.85,
+                    ['Loveware'] = 0.9
+                }
+                local scale = scaleFactors[executor] or 1.0
+                v = math.floor(v * scale)
+            end
 
                 pcall(function()
                     drawing.Object[i] = v
