@@ -27,9 +27,7 @@ local executor = (
     'unknown'
 )
 getgenv().executor = executor
-if executor == "Wave" then
-    executor = "hahahah"
-end
+
 
 local library = {
     windows = {};
@@ -734,7 +732,7 @@ do
                     end
                 elseif i == 'Visible' then
                     drawing.Visible = v
-                elseif i == 'Font' and v == 2 and executor == 'ScriptWare' then
+                elseif i == 'Font' and v == 2 and executor == 'Wave' then
                     v = 1
                 end
 
