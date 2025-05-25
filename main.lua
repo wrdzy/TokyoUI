@@ -17,7 +17,7 @@ local players, http, runservice, inputservice, tweenService, stats, actionservic
 local localplayer = players.LocalPlayer
 
 
-local TextFont = 21
+-- local 21 = 21
 local setByConfig = false
 local floor, ceil, huge, pi, clamp = math.floor, math.ceil, math.huge, math.pi, math.clamp
 local c3new, fromrgb, fromhsv = Color3.new, Color3.fromRGB, Color3.fromHSV
@@ -1140,7 +1140,7 @@ function library:init()
                 ThemeColor = 'Primary Text';
                 Text = message;
                 Outline = true;
-                Font = TextFont;
+                Font = 21;
                 Size = 13;
                 ZIndex = z+4;
                 Parent = notification.background;
@@ -1236,7 +1236,7 @@ function library:init()
                 ThemeColor = 'Primary Text';
                 Text = indicator.title;
                 Size = 13;
-                Font = TextFont;
+                Font = 21;
                 ZIndex = z+2;
                 Center = true;
                 Outline = true;
@@ -1317,7 +1317,7 @@ function library:init()
                     Position = newUDim2(0,3,0,1);
                     ThemeColor = 'Option Text 2';
                     Size = 13;
-                    Font = TextFont;
+                    Font = 21;
                     ZIndex = z+2;
                     Outline = true;
                     Parent = objs.background;
@@ -1327,7 +1327,7 @@ function library:init()
                     Position = newUDim2(0,0,0,1);
                     ThemeColor = 'Option Text 2';
                     Size = 13;
-                    Font = TextFont;
+                    Font = 21;
                     ZIndex = z+2;
                     Outline = true;
                     Parent = objs.background;
@@ -1489,7 +1489,7 @@ function library:init()
                 Position = newUDim2(0,7,0,2);
                 ThemeColor = 'Primary Text';
                 Text = window.title;
-                Font = TextFont;
+                Font = 21;
                 Size = 13;
                 ZIndex = z+1;
                 Outline = true;
@@ -1622,7 +1622,7 @@ function library:init()
                     Text = 'colorpicker_status_text';
                     ThemeColor = 'Option Text 1';
                     Size = 13;
-                    Font = TextFont;
+                    Font = 21;
                     Outline = true;
                     ZIndex = z+1;
                     Parent = objs.background;
@@ -1785,7 +1785,7 @@ function library:init()
                     Color = c3new(1,.1,.1);
                     Text = 'R';
                     Size = 13;
-                    Font = TextFont;
+                    Font = 21;
                     Outline = true;
                     Center = true;
                     ZIndex = z+6;
@@ -1813,7 +1813,7 @@ function library:init()
                     Color = c3new(.1,1,.1);
                     Text = 'G';
                     Size = 13;
-                    Font = TextFont;
+                    Font = 21;
                     Outline = true;
                     Center = true;
                     ZIndex = z+6;
@@ -1841,7 +1841,7 @@ function library:init()
                     Color = c3new(.1,.1,1);
                     Text = 'B';
                     Size = 13;
-                    Font = TextFont;
+                    Font = 21;
                     Outline = true;
                     Center = true;
                     ZIndex = z+6;
@@ -2008,7 +2008,7 @@ function library:init()
                                 ThemeColor = 'Option Text 2';
                                 Text = tostring(value);
                                 Size = 13;
-                                Font = TextFont;
+                                Font = 21;
                                 ZIndex = library.zindexOrder.dropdown+2;
                                 Parent = valueObject.background;
                             })
@@ -2177,7 +2177,7 @@ function library:init()
                     ThemeColor = 'Unselected Tab Text';
                     Text = text;
                     Size = 13;
-                    Font = TextFont;
+                    Font = 21;
                     ZIndex = z+1;
                     Outline = true;
                     Center = true;
@@ -2248,7 +2248,7 @@ function library:init()
                         Position = newUDim2(.0425,0,0,-7);
                         ThemeColor = 'Primary Text';
                         Size = 13;
-                        Font = TextFont;
+                        Font = 21;
                         ZIndex = z+1;
                         Parent = objs.background;
                     })
@@ -2377,7 +2377,7 @@ function library:init()
                             Position = newUDim2(0,19,0,1);
                             ThemeColor = 'Option Text 3';
                             Size = 13;
-                            Font = TextFont;
+                            Font = 21;
                             ZIndex = z+1;
                             Outline = true;
                             Parent = objs.holder;
@@ -2653,7 +2653,7 @@ function library:init()
                             objs.keyText = utility:Draw('Text', {
                                 ThemeColor = 'Option Text 3';
                                 Size = 13;
-                                Font = TextFont;
+                                Font = 21;
                                 ZIndex = z+1;
                                 Parent = objs.holder;
                             })
@@ -2871,7 +2871,7 @@ function library:init()
                                 Position = newUDim2(.5,0,0,-1);
                                 ThemeColor = 'Option Text 3';
                                 Size = 13;
-                                Font = TextFont;
+                                Font = 21;
                                 ZIndex = z+5;
                                 Outline = true;
                                 Center = true;
@@ -3043,7 +3043,7 @@ function library:init()
                                 ThemeColor = 'Option Text 2';
                                 Text = 'none',
                                 Size = 13;
-                                Font = TextFont;
+                                Font = 21;
                                 ZIndex = z+5;
                                 Outline = true;
                                 Parent = objs.background;
@@ -3054,7 +3054,7 @@ function library:init()
                                 ThemeColor = 'Option Text 3';
                                 Text = '+';
                                 Size = 13;
-                                Font = TextFont;
+                                Font = 21;
                                 ZIndex = z+5;
                                 Outline = true;
                                 Parent = objs.background;
@@ -3245,7 +3245,7 @@ function library:init()
                             Position = newUDim2(0,2,0,1);
                             ThemeColor = 'Option Text 3';
                             Size = 13;
-                            Font = TextFont;
+                            Font = 21;
                             ZIndex = z+1;
                             Outline = true;
                             Parent = objs.holder;
@@ -3272,7 +3272,7 @@ function library:init()
                             ThemeColor = 'Option Text 3';
                             Text = '+';
                             Size = 13;
-                            Font = TextFont;
+                            Font = 21;
                             ZIndex = z+4;
                             Center = true;
                             Outline = true;
@@ -3284,7 +3284,7 @@ function library:init()
                             ThemeColor = 'Option Text 3';
                             Text = '-';
                             Size = 13;
-                            Font = TextFont;
+                            Font = 21;
                             ZIndex = z+4;
                             Center = true;
                             Outline = true;
@@ -3475,7 +3475,7 @@ function library:init()
                             Position = newUDim2(.5,0,0,0);
                             ThemeColor = 'Option Text 3';
                             Size = 13;
-                            Font = TextFont;
+                            Font = 21;
                             ZIndex = z+4;
                             Outline = true;
                             Center = true;
@@ -3610,7 +3610,7 @@ function library:init()
                                 Position = newUDim2(.5,0,0,0);
                                 ThemeColor = 'Option Text 3';
                                 Size = 13;
-                                Font = TextFont;
+                                Font = 21;
                                 ZIndex = z+4;
                                 Outline = true;
                                 Center = true;
@@ -3774,7 +3774,7 @@ function library:init()
                             Position = newUDim2(.5,0,0,1);
                             ThemeColor = 'Option Text 2';
                             Size = 13;
-                            Font = TextFont;
+                            Font = 21;
                             ZIndex = z;
                             Outline = true;
                             Center = true;
@@ -3879,7 +3879,7 @@ function library:init()
                             Position = newUDim2(0,2,0,2);
                             ThemeColor = color.risky and 'Risky Text Enabled' or 'Option Text 3';
                             Size = 13;
-                            Font = TextFont;
+                            Font = 21;
                             ZIndex = z+1;
                             Outline = true;
                             Parent = objs.holder;
@@ -4040,7 +4040,7 @@ function library:init()
                             Position = newUDim2(0,2,0,2);
                             ThemeColor = box.risky and 'Risky Text Enabled' or 'Option Text 2';
                             Size = 13;
-                            Font = TextFont;
+                            Font = 21;
                             ZIndex = z+1;
                             Outline = true;
                             Parent = objs.holder;
@@ -4050,7 +4050,7 @@ function library:init()
                             Position = newUDim2(0,2,0,0);
                             ThemeColor = 'Option Text 2';
                             Size = 13;
-                            Font = TextFont;
+                            Font = 21;
                             ZIndex = z+5;
                             Outline = true;
                             Parent = objs.background;
@@ -4245,7 +4245,7 @@ function library:init()
                         objs.keyText = utility:Draw('Text', {
                             ThemeColor = 'Option Text 3';
                             Size = 13;
-                            Font = TextFont;
+                            Font = 21;
                             ZIndex = z+1;
                             Parent = objs.holder;
                         })
@@ -4449,7 +4449,7 @@ function library:init()
                             ThemeColor = 'Option Text 2';
                             Text = 'none',
                             Size = 13;
-                            Font = TextFont;
+                            Font = 21;
                             ZIndex = z+5;
                             Outline = true;
                             Parent = objs.background;
@@ -4460,7 +4460,7 @@ function library:init()
                             ThemeColor = 'Option Text 3';
                             Text = '+';
                             Size = 13;
-                            Font = TextFont;
+                            Font = 21;
                             ZIndex = z+5;
                             Outline = true;
                             Parent = objs.background;
@@ -4603,7 +4603,7 @@ function library:init()
                             Position = newUDim2(0,2,0,2);
                             ThemeColor = text.risky and 'Risky Text Enabled' or 'Option Text 2';
                             Size = 13;
-                            Font = TextFont;
+                            Font = 21;
                             ZIndex = z+1;
                             Outline = true;
                             Parent = objs.holder;
@@ -4750,7 +4750,7 @@ function library:init()
             Position = UDim2.new(0,3,0,0);
             ThemeColor = 'Primary Text';
             Size = 13;
-            Font = TextFont;
+            Font = 21;
             ZIndex = z+1;
             Outline = true;
             Parent = tooltipObjects.background;
@@ -4761,7 +4761,7 @@ function library:init()
             ThemeColor = 'Risky Text Enabled';
             Text = '[RISKY]';
             Size = 13;
-            Font = TextFont;
+            Font = 21;
             ZIndex = z+1;
             Outline = true;
             Parent = tooltipObjects.background;
@@ -4873,7 +4873,7 @@ function library:init()
                 ThemeColor = 'Primary Text';
                 Text = 'Watermark Text';
                 Size = 13;
-                Font = TextFont;
+                Font = 21;
                 ZIndex = z+1;
                 Outline = true;
                 Center = true;
