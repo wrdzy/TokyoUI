@@ -17,7 +17,6 @@ local players, http, runservice, inputservice, tweenService, stats, actionservic
 local localplayer = players.LocalPlayer
 
 
--- local 21 = 21
 local setByConfig = false
 local floor, ceil, huge, pi, clamp = math.floor, math.ceil, math.huge, math.pi, math.clamp
 local c3new, fromrgb, fromhsv = Color3.new, Color3.fromRGB, Color3.fromHSV
