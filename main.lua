@@ -2160,101 +2160,78 @@ function library:init()
         function window:AddTab(text, order)
             local tab = {
                 text = text;
-                order = order or #self.tabs + 1;
+                order = order or #self.tabs+1;
                 callback = function() end;
                 objects = {};
                 sections = {};
             }
-        
+
             table.insert(self.tabs, tab);
-        
+
             --- Create Objects ---
             do
                 local objs = tab.objects;
                 local z = library.zindexOrder.window + 5;
-        
+
                 objs.background = utility:Draw('Square', {
-                    Size = newUDim2(0, 50, 1, 0);
+                    Size = newUDim2(0,50,1,0);
                     Parent = self.objects.tabHolder;
                     ThemeColor = 'Unselected Tab Background';
                     ZIndex = z;
                 })
-        
+
                 objs.innerBorder = utility:Draw('Square', {
-                    Size = newUDim2(1, 2, 1, 2);
-                    Position = newUDim2(0, -1, 0, -1);
+                    Size = newUDim2(1,2,1,2);
+                    Position = newUDim2(0,-1,0,-1);
                     ThemeColor = 'Border 1';
-                    ZIndex = z - 1;
+                    ZIndex = z-1;
                     Parent = objs.background;
                 })
-        
+    
                 objs.outerBorder = utility:Draw('Square', {
-                    Size = newUDim2(1, 2, 1, 2);
-                    Position = newUDim2(0, -1, 0, -1);
+                    Size = newUDim2(1,2,1,2);
+                    Position = newUDim2(0,-1,0,-1);
                     ThemeColor = 'Border 3';
-                    ZIndex = z - 2;
+                    ZIndex = z-2;
                     Parent = objs.innerBorder;
                 })
-        
+
                 objs.topBorder = utility:Draw('Square', {
-                    Size = newUDim2(1, 0, 0, 1);
+                    Size = newUDim2(1,0,0,1);
                     ThemeColor = 'Unselected Tab Background';
-                    ZIndex = z + 1;
+                    ZIndex = z+1;
                     Parent = objs.background;
                 })
-        
+
                 objs.text = utility:Draw('Text', {
                     ThemeColor = 'Unselected Tab Text';
                     Text = text;
                     Size = 13;
                     Font = 2;
-                    ZIndex = z + 1;
+                    ZIndex = z+1;
                     Outline = true;
                     Center = true;
                     Parent = objs.background;
                 })
-        
+
                 utility:Connection(objs.background.MouseButton1Down, function()
                     tab:Select();
-            end)
-        end
-        ----------------------
-    
-        -- Automatically update tab sizes and positions
-        self:UpdateTabsLayout()
-    
-        return tab
-    end
-    
-    
-    function window:UpdateTabsLayout()
-        local tabs = self.tabs
-        local tabCount = #tabs
-        if tabCount == 0 then return end
-    
-        local tabHolderSize = self.objects.tabHolder.Size -- UDim2
-        local totalWidth = tabHolderSize.X.Offset -- pixel width of tabHolder container
-        local tabHeight = tabHolderSize.Y.Offset -- pixel height of tabHolder container
-    
-        local tabSpacing = 4 -- space between tabs in pixels
-        local totalSpacing = tabSpacing * (tabCount - 1)
-        local availableWidth = totalWidth - totalSpacing
-        local tabWidth = availableWidth / tabCount
-    
-        for i, tab in ipairs(tabs) do
-            local objs = tab.objects
-            local xPos = (i - 1) * (tabWidth + tabSpacing)
-    
-            objs.background.Size = newUDim2(0, tabWidth, 1, 0)
-            objs.background.Position = newUDim2(0, xPos, 0, 0)
-    
-            -- Borders position/size inherit from background; no changes needed
-    
-            objs.text.Position = newUDim2(0.5, 0, 0.5, 0)
-            objs.text.Center = true
-        end
-    end
+                end)
 
+            end
+            ----------------------
+
+            function tab:AddSection(text, side, order)
+                local section = {
+                    text = tostring(text);
+                    side = side == nil and 1 or clamp(side,1,2);
+                    order = order or #self.sections+1;
+                    enabled = true;
+                    objects = {};
+                    options = {};
+                };
+
+                table.insert(self.sections, section);
 
                 --- Create Objects ---
                 do
