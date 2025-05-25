@@ -21,12 +21,62 @@ local floor, ceil, huge, pi, clamp = math.floor, math.ceil, math.huge, math.pi, 
 local c3new, fromrgb, fromhsv = Color3.new, Color3.fromRGB, Color3.fromHSV
 local next, newInstance, newUDim2, newVector2 = next, Instance.new, UDim2.new, Vector2.new
 local isexecutorclosure = isexecutorclosure or is_synapse_function or is_sirhurt_closure or iskrnlclosure;
-local executor = (
-    identifyexecutor and select(1, identifyexecutor()) or
-    getexecutorname and getexecutorname() or
-    'unknown'
-)
-getgenv().executor = executor
+-- Executor-specific scaling configurations
+local executorScaling = {
+    ["Wave"] = 1.0,
+    ["Zenith"] = 1.0,
+    ["AWP.GG"] = 0.95,
+    ["Volcano"] = 1.0,
+    ["Velocity"] = 1.0,
+    ["Swift"] = 1.0,
+    ["Solware"] = 0.9,
+    ["Potassium"] = 0.95,
+    ["Solara"] = 1.0,
+    ["Visual"] = 1.0,
+    ["Xeno"] = 1.0,
+    ["Sirhurt"] = 0.85,
+    ["Loveware"] = 0.9,
+    ["unknown"] = 1.0
+}
+
+-- Get DPI scale
+local viewportScale = 1
+local testGui = Instance.new("ScreenGui", game:GetService("CoreGui"))
+local testFrame = Instance.new("Frame", testGui)
+testFrame.Size = UDim2.new(0, 100, 0, 100)
+game:GetService("RunService").RenderStepped:Wait()
+viewportScale = testFrame.AbsoluteSize.X / 100
+testGui:Destroy()
+
+-- Apply executor-specific scaling
+local executorScale = executorScaling[executor] or 1.0
+local finalScale = viewportScale * executorScale
+
+-- Override Drawing.new to apply scaling
+local originalDrawingNew = Drawing.new
+Drawing.new = function(drawingType)
+    local drawing = originalDrawingNew(drawingType)
+    local mt = getmetatable(drawing)
+    local originalIndex = mt.__index
+    local originalNewIndex = mt.__newindex
+    
+    mt.__newindex = function(self, key, value)
+        if key == "Size" and drawingType == "Text" then
+            value = math.floor(value * finalScale)
+        elseif key == "Size" and type(value) == "table" then
+            value = Vector2.new(value.X * finalScale, value.Y * finalScale)
+        elseif key == "Position" and type(value) == "table" then
+            value = Vector2.new(value.X * finalScale, value.Y * finalScale)
+        elseif key == "Radius" then
+            value = value * finalScale
+        elseif key == "Thickness" then
+            value = math.max(1, math.floor(value * finalScale))
+        end
+        return originalNewIndex(self, key, value)
+    end
+    
+    return drawing
+end
 
 local library = {
     windows = {};
