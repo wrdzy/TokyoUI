@@ -4733,8 +4733,16 @@ end
     -- Calculate dynamic tab width based on UI width and number of tabs
     local totalWidth = self.objects.tabHolder.Object.Size.X
     local tabCount = #self.tabs
-    local spacing = tabCount > 1 and (tabCount - 1) or 0
-    local tabWidth = tabCount > 0 and (totalWidth - spacing) / tabCount or totalWidth
+    
+    if tabCount == 0 then return end
+    
+    local spacing = 1 -- 1 pixel spacing between tabs
+    local totalSpacing = (tabCount - 1) * spacing
+    local availableWidth = totalWidth - totalSpacing
+    
+    -- Calculate base tab width and distribute any remaining pixels
+    local baseTabWidth = math.floor(availableWidth / tabCount)
+    local remainingPixels = availableWidth - (baseTabWidth * tabCount)
     
     local pos = 0;
     for i,v in next, self.tabs do
@@ -4742,7 +4750,17 @@ end
         v.selected = v == self.selectedTab;
         objs.background.ThemeColor = v.selected and 'Selected Tab Background' or 'Unselected Tab Background';
         
-        -- Use dynamic width instead of text-based width
+        -- Give extra pixels to the first tabs to ensure full coverage
+        local tabWidth = baseTabWidth
+        if i <= remainingPixels then
+            tabWidth = tabWidth + 1
+        end
+        
+        -- The last tab should extend to fill any remaining space
+        if i == tabCount then
+            tabWidth = totalWidth - pos
+        end
+        
         objs.background.Size = newUDim2(0, tabWidth, 1, v.selected and 1 or 0);
         objs.background.Position = newUDim2(0, pos, 0, 0)
 
@@ -4751,7 +4769,10 @@ end
 
         objs.topBorder.ThemeColor = v.selected and 'Accent' or 'Unselected Tab Background';
 
-        pos = pos + tabWidth + 1
+        -- Update position for next tab
+        if i < tabCount then
+            pos = pos + tabWidth + spacing
+        end
 
         v:UpdateSections();
 
