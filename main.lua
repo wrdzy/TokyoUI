@@ -2221,76 +2221,107 @@ function library:init()
             end
             ----------------------
 
-            function tab:AddSection(text, side, order)
-                local section = {
-                    text = tostring(text);
-                    side = side == nil and 1 or clamp(side,1,2);
-                    order = order or #self.sections+1;
-                    enabled = true;
-                    objects = {};
-                    options = {};
-                };
-
-                table.insert(self.sections, section);
-
-                --- Create Objects ---
-                do
-                    local objs = section.objects;
-                    local z = library.zindexOrder.window+15;
-
-                    objs.background = utility:Draw('Square', {
-                        ThemeColor = 'Section Background';
-                        ZIndex = z;
-                        Parent = window.objects['columnholder'..(section.side)];
-                    })
-
-                    objs.innerBorder = utility:Draw('Square', {
-                        Size = newUDim2(1,2,1,1);
-                        Position = newUDim2(0,-1,0,0);
-                        ThemeColor = 'Border 3';
-                        ZIndex = z-1;
-                        Parent = objs.background;
-                    })
-
-                    objs.outerBorder = utility:Draw('Square', {
-                        Size = newUDim2(1,2,1,1);
-                        Position = newUDim2(0,-1,0,0);
-                        ThemeColor = 'Border 1';
-                        ZIndex = z-2;
-                        Parent = objs.innerBorder;
-                    })
-
-                    objs.topBorder1 = utility:Draw('Square', {
-                        Size = newUDim2(.025,1,0,1);
-                        Position = newUDim2(0,-1,0,0);
-                        ThemeColor = 'Accent';
-                        ZIndex = z+1;
-                        Parent = objs.background;
-                    })
-
-                    objs.topBorder2 = utility:Draw('Square', {
-                        ThemeColor = 'Accent';
-                        ZIndex = z+1;
-                        Parent = objs.background;
-                    })
-
-                    objs.textlabel = utility:Draw('Text', {
-                        Position = newUDim2(.0425,0,0,-7);
-                        ThemeColor = 'Primary Text';
-                        Size = 13;
-                        Font = 2;
-                        ZIndex = z+1;
-                        Parent = objs.background;
-                    })
-
-                    objs.optionholder = utility:Draw('Square',{
-                        Size = newUDim2(1-.03,0,1,-15);
-                        Position = newUDim2(.015,0,0,13);
-                        Transparency = 0;
-                        ZIndex = z+1;
-                        Parent = objs.background;
-                    })
+            function window:AddTab(text, order)
+                    local tab = {
+                        text = text;
+                        order = order or #self.tabs+1;
+                        callback = function() end;
+                        objects = {};
+                        sections = {};
+                    }
+                    table.insert(self.tabs, tab);
                     
+                    --- Create Objects ---
+                    do
+                        local objs = tab.objects;
+                        local z = library.zindexOrder.window + 5;
+                        
+                        objs.background = utility:Draw('Square', {
+                            Size = newUDim2(0,50,1,0); -- This will be updated by UpdateTabs
+                            Parent = self.objects.tabHolder;
+                            ThemeColor = 'Unselected Tab Background';
+                            ZIndex = z;
+                        })
+                        
+                        objs.innerBorder = utility:Draw('Square', {
+                            Size = newUDim2(1,2,1,2);
+                            Position = newUDim2(0,-1,0,-1);
+                            ThemeColor = 'Border 1';
+                            ZIndex = z-1;
+                            Parent = objs.background;
+                        })
+                
+                        objs.outerBorder = utility:Draw('Square', {
+                            Size = newUDim2(1,2,1,2);
+                            Position = newUDim2(0,-1,0,-1);
+                            ThemeColor = 'Border 3';
+                            ZIndex = z-2;
+                            Parent = objs.innerBorder;
+                        })
+                        
+                        objs.topBorder = utility:Draw('Square', {
+                            Size = newUDim2(1,0,0,1);
+                            ThemeColor = 'Unselected Tab Background';
+                            ZIndex = z+1;
+                            Parent = objs.background;
+                        })
+                        
+                        objs.text = utility:Draw('Text', {
+                            ThemeColor = 'Unselected Tab Text';
+                            Text = text;
+                            Size = 13;
+                            Font = 2;
+                            ZIndex = z+1;
+                            Outline = true;
+                            Center = true;
+                            Parent = objs.background;
+                        })
+                        
+                        utility:Connection(objs.background.MouseButton1Down, function()
+                            tab:Select();
+                        end)
+                    end
+                    
+                    if window.selectedTab == nil then
+                        tab:Select();
+                    end
+                
+                    tab:SetText(tab.text);
+                    window:UpdateTabs();
+                    return tab;
+                end
+                
+                function window:UpdateTabs()
+                    table.sort(self.tabs, function(a,b)
+                        return a.order < b.order
+                    end)
+                    
+                    -- Calculate dynamic tab width based on UI width and number of tabs
+                    local totalWidth = self.objects.tabHolder.Object.Size.X
+                    local tabCount = #self.tabs
+                    local spacing = tabCount > 1 and (tabCount - 1) or 0 -- spacing between tabs
+                    local tabWidth = tabCount > 0 and (totalWidth - spacing) / tabCount or totalWidth
+                    
+                    local pos = 0;
+                    for i,v in next, self.tabs do
+                        local objs = v.objects;
+                        v.selected = v == self.selectedTab;
+                        
+                        objs.background.ThemeColor = v.selected and 'Selected Tab Background' or 'Unselected Tab Background';
+                        
+                        -- Set dynamic width and position
+                        objs.background.Size = newUDim2(0, tabWidth, 1, v.selected and 1 or 0);
+                        objs.background.Position = newUDim2(0, pos, 0, 0)
+                
+                        objs.text.ThemeColor = v.selected and 'Selected Tab Text' or 'Unselected Tab Text';
+                        objs.text.Position = newUDim2(.5, 0, 0, 3);
+                
+                        objs.topBorder.ThemeColor = v.selected and 'Accent' or 'Unselected Tab Background';
+                
+                        pos = pos + tabWidth + 1 -- Add 1 pixel spacing between tabs
+                
+                        v:UpdateSections();
+                    end
                 end
                 ----------------------
 
