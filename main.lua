@@ -4973,6 +4973,7 @@ end
 
 end
 
+-- Fixed CreateSettingsTab function
 function library:CreateSettingsTab(menu)
     local settingsTab = menu:AddTab('Settings', 999);
     local configSection = settingsTab:AddSection('Config', 1);
@@ -5005,9 +5006,14 @@ function library:CreateSettingsTab(menu)
         writefile(self.cheatname..'/'..self.configname..'/'..library.flags.configinput.. self.fileext, http:JSONEncode({}));
         refreshConfigs()
     end}):AddButton({text = 'Delete', confirm = true, callback = function()
+        -- Fixed: Changed from library.flags.configinput to library.flags.selectedconfig
         if library:GetConfig(library.flags.selectedconfig) then
-            writefile(self.cheatname..'/'..self.configname..'/'..library.flags.configinput.. self.fileext, http:JSONEncode({}));
+            -- Fixed: Now using selectedconfig for deletion
+            delfile(self.cheatname..'/'..self.configname..'/'..library.flags.selectedconfig.. self.fileext);
             refreshConfigs()
+            library:SendNotification('Successfully deleted config: '..library.flags.selectedconfig, 5, c3new(0,1,0));
+        else
+            library:SendNotification('Config \''..library.flags.selectedconfig..'\' does not exist.', 5, c3new(1,0,0));
         end
     end})
 
