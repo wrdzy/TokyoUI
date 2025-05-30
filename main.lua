@@ -1007,10 +1007,36 @@ end
     end
 
     self.cursor1 = utility:Draw('Triangle', {Filled = true, Color = fromrgb(255,255,255), ZIndex = self.zindexOrder.cursor});
-    self.cursor2 = utility:Draw('Triangle', {Filled = true, Color = fromrgb(85,85,85), self.zindexOrder.cursor-1});
+    self.cursor2 = utility:Draw('Triangle', {Filled = true, Color = fromrgb(85,85,85), ZIndex = self.zindexOrder.cursor-1});
+    
+    -- Add cursor management variables
+    local cursorHidden = false;
+    local lastCursorIcon = nil;
+    
+    -- Function to hide/show Roblox cursor
+    local function setRobloxCursorVisible(visible)
+        if visible then
+            -- Restore the previous cursor icon
+            inputservice.MouseIcon = lastCursorIcon or "";
+            cursorHidden = false;
+        else
+            -- Save current cursor icon and hide it
+            if not cursorHidden then
+                lastCursorIcon = inputservice.MouseIcon;
+            end
+            inputservice.MouseIcon = "rbxasset://textures/blank.png"; -- Use blank texture to hide cursor
+            cursorHidden = true;
+        end
+    end
+    
+    -- Modified updateCursor function
     local function updateCursor()
         self.cursor1.Visible = self.open
         self.cursor2.Visible = self.open
+        
+        -- Hide/show Roblox cursor based on menu state
+        setRobloxCursorVisible(not self.open);
+        
         if self.cursor1.Visible then
             local pos = inputservice:GetMouseLocation();
             self.cursor1.PointA = pos;
@@ -1135,7 +1161,10 @@ end
     function self:SetOpen(bool)
         self.open = bool;
         screenGui.Enabled = bool;
-
+    
+        -- Update Roblox cursor visibility
+        setRobloxCursorVisible(not bool);
+    
         if bool and library.flags.disablemenumovement then
             actionservice:BindAction(
                 'FreezeMovement',
@@ -1148,15 +1177,21 @@ end
         else
             actionservice:UnbindAction('FreezeMovement');
         end
-
+    
         updateCursor();
         for _,window in next, self.windows do
             window:SetOpen(bool);
         end
-
+    
         library.CurrentTooltip = nil;
         tooltipObjects.background.Visible = false
     end
+
+    utility:Connection(library.unloaded, function()
+        -- Restore Roblox cursor when unloading
+        setRobloxCursorVisible(true);
+        screenGui:Destroy()
+    end)
 
     function self.UpdateThemeColors()
         for _,v in next, library.drawings do
