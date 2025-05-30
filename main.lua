@@ -1015,18 +1015,8 @@ end
     
     -- Function to hide/show Roblox cursor
     local function setRobloxCursorVisible(visible)
-        if visible then
-            -- Restore the previous cursor icon
-            inputservice.MouseIcon = lastCursorIcon or "";
-            cursorHidden = false;
-        else
-            -- Save current cursor icon and hide it
-            if not cursorHidden then
-                lastCursorIcon = inputservice.MouseIcon;
-            end
-            inputservice.MouseIcon = "rbxasset://textures/blank.png"; -- Use blank texture to hide cursor
-            cursorHidden = true;
-        end
+        inputservice.MouseIconEnabled = visible;
+    end
     end
     
     -- Modified updateCursor function
