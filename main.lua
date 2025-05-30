@@ -1142,7 +1142,7 @@ end
             inputservice.MouseIconEnabled = false
             local mouse = localplayer and localplayer:GetMouse()
             if mouse then
-                -- mouse.Icon = "rbxasset://textures/Blank.png"
+                mouse.Icon = "rbxasset://textures/Blank.png"
             end
             actionservice:BindAction("HideCursor", function()
                 return Enum.ContextActionResult.Sink
@@ -1161,11 +1161,11 @@ end
         end)
     end
 
-    -- if bool then
-    --     hideCursor()
-    -- else
-    --     showCursor()
-    -- end
+    if bool then
+        hideCursor()
+    else
+        showCursor()
+    end
 
     if bool and library.flags.disablemenumovement then
         actionservice:BindAction(
