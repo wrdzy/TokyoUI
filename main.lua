@@ -1007,26 +1007,10 @@ end
     end
 
     self.cursor1 = utility:Draw('Triangle', {Filled = true, Color = fromrgb(255,255,255), ZIndex = self.zindexOrder.cursor});
-    self.cursor2 = utility:Draw('Triangle', {Filled = true, Color = fromrgb(85,85,85), ZIndex = self.zindexOrder.cursor-1});
-    
-    -- Add cursor management variables
-    local cursorHidden = false;
-    local lastCursorIcon = nil;
-    
-    -- Function to hide/show Roblox cursor
-    local function setRobloxCursorVisible(visible)
-        inputservice.MouseIconEnabled = visible;
-    end
-    end
-    
-    -- Modified updateCursor function
+    self.cursor2 = utility:Draw('Triangle', {Filled = true, Color = fromrgb(85,85,85), self.zindexOrder.cursor-1});
     local function updateCursor()
         self.cursor1.Visible = self.open
         self.cursor2.Visible = self.open
-        
-        -- Hide/show Roblox cursor based on menu state
-        setRobloxCursorVisible(not self.open);
-        
         if self.cursor1.Visible then
             local pos = inputservice:GetMouseLocation();
             self.cursor1.PointA = pos;
@@ -1149,39 +1133,62 @@ end
     end)
     
     function self:SetOpen(bool)
-        self.open = bool;
-        screenGui.Enabled = bool;
-    
-        -- Update Roblox cursor visibility
-        setRobloxCursorVisible(not bool);
-    
-        if bool and library.flags.disablemenumovement then
-            actionservice:BindAction(
-                'FreezeMovement',
-                function()
-                    return Enum.ContextActionResult.Sink
-                end,
-                false,
-                unpack(Enum.PlayerActions:GetEnumItems())
-            )
-        else
-            actionservice:UnbindAction('FreezeMovement');
-        end
-    
-        updateCursor();
-        for _,window in next, self.windows do
-            window:SetOpen(bool);
-        end
-    
-        library.CurrentTooltip = nil;
-        tooltipObjects.background.Visible = false
+    self.open = bool;
+    screenGui.Enabled = bool;
+
+    -- Hide or show the Roblox cursor based on menu state
+    local function hideCursor()
+        pcall(function()
+            inputservice.MouseIconEnabled = false
+            local mouse = localplayer and localplayer:GetMouse()
+            if mouse then
+                mouse.Icon = "rbxasset://textures/Blank.png"
+            end
+            actionservice:BindAction("HideCursor", function()
+                return Enum.ContextActionResult.Sink
+            end, false, Enum.UserInputType.MouseMovement)
+        end)
     end
 
-    utility:Connection(library.unloaded, function()
-        -- Restore Roblox cursor when unloading
-        setRobloxCursorVisible(true);
-        screenGui:Destroy()
-    end)
+    local function showCursor()
+        pcall(function()
+            inputservice.MouseIconEnabled = true
+            local mouse = localplayer and localplayer:GetMouse()
+            if mouse then
+                mouse.Icon = ""
+            end
+            actionservice:UnbindAction("HideCursor")
+        end)
+    end
+
+    if bool then
+        hideCursor()
+    else
+        showCursor()
+    end
+
+    if bool and library.flags.disablemenumovement then
+        actionservice:BindAction(
+            'FreezeMovement',
+            function()
+                return Enum.ContextActionResult.Sink
+            end,
+            false,
+            unpack(Enum.PlayerActions:GetEnumItems())
+        )
+    else
+        actionservice:UnbindAction('FreezeMovement');
+    end
+
+    updateCursor();
+    for _,window in next, self.windows do
+        window:SetOpen(bool);
+    end
+
+    library.CurrentTooltip = nil;
+    tooltipObjects.background.Visible = false
+end
+
 
     function self.UpdateThemeColors()
         for _,v in next, library.drawings do
