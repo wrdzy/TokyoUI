@@ -856,43 +856,110 @@ function library:init()
         end
     end
 
-    function self:LoadConfig(name)
-        local cfg = self:GetConfig(name)
-        if not cfg then
-            self:SendNotification('Error loading config: Config does not exist. ('..tostring(name)..')', 5, c3new(1,0,0));
-            return
-        end
+    function library:LoadConfig(name)
+    local cfg = self:GetConfig(name)
+    if not cfg then
+        self:SendNotification('Error loading config: Config does not exist. ('..tostring(name)..')', 5, c3new(1,0,0));
+        return
+    end
 
-        local s,e = pcall(function()
-            setByConfig = true
-            for flag,value in next, http:JSONDecode(cfg) do
-                local option = library.options[flag]
-                if option ~= nil then
-                    if option.class == 'toggle' then
-                        option:SetState(value == nil and false or (value == 1 and true or false));
-                    elseif option.class == 'slider' then
-                        option:SetValue(value == nil and 0 or value)
-                    elseif option.class == 'bind' then
-                        option:SetBind(value == nil and 'none' or (utility:HasProperty(Enum.KeyCode, value) and Enum.KeyCode[value] or Enum.UserInputType[value]));
-                    elseif option.class == 'color' then
-                        option:SetColor(value == nil and c3new(1,1,1) or c3new(value[1], value[2], value[3]));
-                        option:SetTrans(value == nil and 1 or value[4]);
-                    elseif option.class == 'list' then
-                        option:Select(value == nil and '' or value);
-                    elseif option.class == 'box' then
-                        option:SetInput(value == nil and '' or value)
+    local s,e = pcall(function()
+        setByConfig = true
+        
+        -- Decode the JSON config
+        local decodedCfg = http:JSONDecode(cfg)
+        
+        -- Validate that decodedCfg is a table
+        if type(decodedCfg) ~= "table" then
+            error("Invalid config format: expected table, got " .. type(decodedCfg))
+        end
+        
+        for flag,value in next, decodedCfg do
+            local option = library.options[flag]
+            if option ~= nil then
+                if option.class == 'toggle' then
+                    option:SetState(value == nil and false or (value == 1 and true or false));
+                elseif option.class == 'slider' then
+                    option:SetValue(value == nil and option.min or value)
+                elseif option.class == 'bind' then
+                    option:SetBind(value == nil and 'none' or (utility:HasProperty(Enum.KeyCode, value) and Enum.KeyCode[value] or Enum.UserInputType[value]));
+                elseif option.class == 'color' then
+                    if type(value) == "table" and #value >= 3 then
+                        option:SetColor(c3new(value[1], value[2], value[3]));
+                        if value[4] then
+                            option:SetTrans(value[4]);
+                        end
                     end
+                elseif option.class == 'list' then
+                    option:Select(value == nil and '' or value);
+                elseif option.class == 'box' then
+                    option:SetInput(value == nil and '' or value)
                 end
             end
-            setByConfig = false
-        end)
+        end
+        setByConfig = false
+    end)
 
-        if s then
-            self:SendNotification('Successfully loaded config: '..name, 5, c3new(0,1,0));
-        else
-            self:SendNotification('Error loading config: '..tostring(e)..'. ('..tostring(name)..')', 5, c3new(1,0,0));
+    if s then
+        self:SendNotification('Successfully loaded config: '..name, 5, c3new(0,1,0));
+    else
+        self:SendNotification('Error loading config: '..tostring(e)..'. ('..tostring(name)..')', 5, c3new(1,0,0));
+        
+        -- If the config is corrupted, offer to reset it
+        if e and (e:find("invalid argument") or e:find("JSONDecode")) then
+            self:SendNotification('Config appears to be corrupted. Creating backup and resetting...', 5, c3new(1,0.5,0));
+            
+            -- Create a backup of the corrupted config
+            pcall(function()
+                writefile(self.cheatname..'/'..self.configname..'/'..name..'_backup_'..os.time()..self.fileext, cfg);
+            end)
+            
+            -- Reset the config file with empty data
+            pcall(function()
+                writefile(self.cheatname..'/'..self.configname..'/'..name..self.fileext, http:JSONEncode({}));
+            end)
         end
     end
+end
+
+-- Also fix the SaveConfig function to ensure proper formatting
+function library:SaveConfig(name)
+    if not self:GetConfig(name) then
+        self:SendNotification('Error saving config: Config does not exist. ('..tostring(name)..')', 5, c3new(1,0,0));
+        return
+    end
+
+    local s,e = pcall(function()
+        local cfg = {};
+        for flag,option in next, self.options do
+            if option.class == 'toggle' then
+                cfg[flag] = option.state and 1 or 0;
+            elseif option.class == 'slider' then
+                cfg[flag] = option.value;
+            elseif option.class == 'bind' then
+                cfg[flag] = option.bind ~= 'none' and option.bind.Name or 'none';
+            elseif option.class == 'color' then
+                cfg[flag] = {
+                    option.color.r,
+                    option.color.g,
+                    option.color.b,
+                    option.trans,
+                }
+            elseif option.class == 'list' then
+                cfg[flag] = option.selected;
+            elseif option.class == 'box' then
+                cfg[flag] = option.input
+            end
+        end
+        writefile(self.cheatname..'/'..self.configname..'/'..name..self.fileext, http:JSONEncode(cfg));
+    end)
+
+    if s then
+        self:SendNotification('Successfully saved config: '..name, 5, c3new(0,1,0));
+    else
+        self:SendNotification('Error saving config: '..tostring(e)..'. ('..tostring(name)..')', 5, c3new(1,0,0));
+    end
+end
 
     function self:SaveConfig(name)
         if not self:GetConfig(name) then
